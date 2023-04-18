@@ -2,7 +2,48 @@
 
 **This task is to write a small MVP ledger service that manages user balances**
 
-Expose endpoints
+To access this code 
+
+try go get 
+
+Expose endpoints run `go get github.com/gopalrg310/bitburst` in terminal.
+
+"In terminal 1":
+
+if docker not available install the docker setup in machine
+run below command
+`docker-compose up`
+
+"In terminal 2":
+`cd postdeploymenttesting`
+`go test -v`
+
+Able to see below result
+
+```
+MacBook-Pro:postdeploymenttesting gravip214$ go test -v
+=== RUN   Test_Postiveflow
+Test passed:  {"Message":"Transaction of $500.000000 added for user gopal"}  Status:  200
+Test passed:  {"Message":"User gopal has a balance of $500.000000"}  Status:  200
+Test passed:  [{"UserID":"gopal","Amount":500,"Timestamp":"2023-04-18T17:03:00.309113Z"}]  Status:  200
+--- PASS: Test_Postiveflow (0.02s)
+=== RUN   Test_Negativeflow1
+Test passed:    Status:  405
+Test passed:    Status:  405
+Test passed:    Status:  405
+--- PASS: Test_Negativeflow1 (0.00s)
+=== RUN   Test_Negativeflow2
+Test passed:  {"Message":"Amount must be positive"}  Status:  500
+--- PASS: Test_Negativeflow2 (0.00s)
+=== RUN   Test_Negativeflow3
+Test passed:  {"Message":"User unknown has a balance of $0.000000"}  Status:  200
+--- PASS: Test_Negativeflow3 (0.00s)
+=== RUN   Test_Negativeflow4
+Test passed:  {}  Status:  200
+--- PASS: Test_Negativeflow4 (0.00s)
+PASS
+ok      github.com/gopalrg310/bitburst/postdeploymenttesting    0.700s
+```
 
 /users/{uid}/add → takes a positive amount in USD to be added to the users account
 /users/{uid}/balance → that shows how much money the user currently has 
