@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: bitburstasses
+      POSTGRES_USER: postgres
+      PGSSLMODE: disable
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: password
+    networks:
+      - mynetwork
+    entrypoint: >
+      /bin/sh -c "chmod +x /docker-entrypoint-initdb.d/stuff.sh &&
+      docker-entrypoint.sh -c logging_collector=on -c log_directory='pg_log' -c log_statement='all'"
+  bitburst:
+    build: .
+    ports:
+      - 8080:8080
+    entrypoint: ./BitBurst
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+    links:
+      - postgres
+networks: 
+  mynetwork:
+    name: mynetwork
+    external: false
+volumes:
+  db:
+    driver: local
