@@ -1,23 +1,21 @@
 package utils
 
-import(
+import (
 	"context"
-	"encoding/json"
+
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/gorilla/mux"
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgx/v4"
+	"github.com/gopalrg310/bitburst/models"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/sirupsen/logrus"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"runtime/debug"
-	"strconv"
-	"strings"
 	"time"
 )
+
+var Log = logrus.New()
+
 func ResponseHandler(rw http.ResponseWriter, reqLog *logrus.Entry, serviceName string, contentType interface{}, status interface{}, response string, code int, loggerInfo string, loggerInfoObj interface{}, loggerErr string, err interface{}) {
 
 	defer RecoverFunc("ResponseHandler")
@@ -83,7 +81,7 @@ func InitialRecover(rw http.ResponseWriter, submodule, serviceName string) {
 func FormJsonOutput(output string) string {
 	return fmt.Sprintf("{\"Message\":\"%v\"}", output)
 }
-func AddTransaction(db *pgx.Conn, transaction UserTransaction) error {
+func AddTransaction(db *pgxpool.Pool, transaction models.UserTransaction) error {
 	statement := `INSERT INTO transactions (user_id, amount, transaction_id, Created_At) 
                   VALUES ($1, $2, $3, $4) ON CONFLICT (user_id, transaction_id) DO NOTHING`
 
@@ -92,20 +90,19 @@ func AddTransaction(db *pgx.Conn, transaction UserTransaction) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
-func ConnectDB(nooftry int,databaseUrl string)(*pgx.Conn, context.Context){
-	nooftry+=1
-	ctx:=context.Background()
-	dbPool, err := pgx.Connect(ctx, databaseUrl)
+func ConnectDB(nooftry int, databaseUrl string) (*pgxpool.Pool, context.Context) {
+	nooftry += 1
+	ctx := context.Background()
+	dbPool, err := pgxpool.Connect(ctx, databaseUrl)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		time.Sleep(1 *time.Minute)
+		time.Sleep(1 * time.Minute)
 		return ConnectDB(nooftry, databaseUrl)
 	}
-	if nooftry>5{
+	if nooftry > 5 {
 		os.Exit(1)
 	}
 	return dbPool, ctx

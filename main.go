@@ -1,45 +1,26 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgx/v4"
-	"github.com/sirupsen/logrus"
-	"io"
+
 	"log"
 	"net/http"
-	"os"
-	"runtime/debug"
-	"strconv"
-	"strings"
-	"time"
-	"github.com/gopalrg310/BitBurst/handler"
-	"github.com/gopalrg310/BitBurst/utils"
+
+	"github.com/gopalrg310/bitburst/handler"
+	"github.com/gopalrg310/bitburst/utils"
 )
 
-
-
-var Log = logrus.New()
-
 func main() {
-	/*	db, err := sql.Open("postgres", "postgres://postgres:@localhost:5432/bitburstasses?sslmode=disable")
-		if err != nil {
-			log.Fatalf("Error opening database: %v", err)
-		}
-		defer db.Close()*/
 	// ensure to change values as needed.
 	databaseUrl := "postgres://postgres:password@postgres:5432/bitburstasses"
 
 	// this returns connection pool
-	userService:=handler.NewUserService()
+	userService := handler.NewUserService()
+
+	dbPool, _ := utils.ConnectDB(0, databaseUrl)
 	// to close DB pool
-	dbPool,ctx:=utils.ConnectDB(0,databaseUrl)
-	defer dbPool.Close(ctx)
-	userService.Db := dbPool
+	defer dbPool.Close()
+	userService.Db = dbPool
 
 	r := mux.NewRouter()
 	r.HandleFunc("/users/{uid}/add", userService.AddTransactionHandler).Methods("POST")
