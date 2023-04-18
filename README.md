@@ -15,6 +15,7 @@ run below command
 `docker-compose up`
 
 **In terminal 2:**
+
 `cd postdeploymenttesting`
 
 `go test -v`
