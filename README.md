@@ -8,14 +8,15 @@ try go get
 
 Expose endpoints run `go get github.com/gopalrg310/bitburst` in terminal.
 
-"In terminal 1":
+**In terminal 1:**
 
 if docker not available install the docker setup in machine
 run below command
 `docker-compose up`
 
-"In terminal 2":
+**In terminal 2:**
 `cd postdeploymenttesting`
+
 `go test -v`
 
 Able to see below result
