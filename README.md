@@ -10,49 +10,49 @@ Expose endpoints
 
 
 How could the service be developed to handle thousands of concurrent users with hundreds of transactions each?
-Asynchronous processing.
+Asynchronous processing?
 
-Optimize database interactions
+* Optimize database interactions
 
-Use caching such as Redis or Memcached.
+* Use caching such as Redis or Memcached.
 
-Scalable architecture.
+* Scalable architecture.
 
-Implement rate limiting.
+* Implement rate limiting.
 
-Monitor and optimize performance.
+* Monitor and optimize performance.
 
-Use fault-tolerant techniques.
+* Use fault-tolerant techniques.
 
-Plan for scalability.
+* Plan for scalability.
 
 What has to be paid attention to if we assume that the service is going to run in multiple instances for high availability?
 
-Shared data consistency such as distributed transactions or event-driven architectures.
+* Shared data consistency such as distributed transactions or event-driven architectures.
 
-Load balancing among all instances.
+* Load balancing among all instances.
 
-Session management.
+* Session management.
 
-Distributed caching like Redis or Memcached that support distributed caching.
+* Distributed caching like Redis or Memcached that support distributed caching.
 
-Cross-instance communication.
+* Cross-instance communication.
 
-Health monitoring and failover.
+* Health monitoring and failover.
 
-Scalable infrastructure with scalability and resilience.
+* Scalable infrastructure with scalability and resilience.
 
-Testing and deployment.
+* Testing and deployment.
 
-Disaster recovery.
+* Disaster recovery.
 
 How does the the add endpoint have to be designed, if the caller cannot guarantee that it will call exactely once for the same money transfer?
-Request Deduplication.
+Request Deduplication?
 
-Idempotency Tokens.
+* Idempotency Tokens.
 
-Database Transactions.
+* Database Transactions.
 
-Idempotent API Design.
+* Idempotent API Design.
 
-Proper Error Handling.
+* Proper Error Handling.
